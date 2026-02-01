@@ -1,0 +1,51 @@
+# Polymarket Copy Trading System Dependencies
+# 
+# Two modes available:
+# 1. On-Chain Mode (recommended if Polymarket API blocked):
+#    Uses Polygon RPC + The Graph, no Polymarket API needed
+# 
+# 2. Full Mode (requires Polymarket API access):
+#    Uses official API for better data
+#
+# NOTE: py-clob-client requires Python >= 3.9.10
+# If you have Python >= 3.9.10 and API access, install:
+# pip install git+https://github.com/Polymarket/py-clob-client.git
+
+# Web3 and Blockchain (REQUIRED for on-chain mode)
+web3>=6.0.0
+eth-account>=0.8.0
+eth-abi>=4.0.0
+
+# HTTP and Async
+aiohttp>=3.9.0
+requests>=2.31.0
+httpx>=0.25.0
+
+# Data Processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Configuration
+python-dotenv>=1.0.0
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+
+# Scheduling and Tasks
+apscheduler>=3.10.0
+
+# Logging
+loguru>=0.7.0
+
+# Database (for tracking)
+sqlalchemy>=2.0.0
+aiosqlite>=0.19.0
+
+# Rate Limiting
+ratelimit>=2.2.1
+
+# CLI
+click>=8.1.0
+rich>=13.0.0
+
+# Websockets (for real-time data)
+websockets>=12.0
