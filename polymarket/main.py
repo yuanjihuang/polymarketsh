@@ -446,7 +446,9 @@ def analyze(address: str):
 
 @cli.command()
 @click.option('--dry-run', is_flag=True, help='Run in simulation mode')
-def onchain(dry_run: bool):
+@click.option('--balance', default=1000.0, help='Initial paper trading balance (USD)')
+@click.option('--copy-ratio', default=0.1, help='Copy ratio (0.1 = 10%% of detected trade size)')
+def onchain(dry_run: bool, balance: float, copy_ratio: float):
     """
     Start copy trading using ONLY on-chain data.
     
@@ -456,43 +458,40 @@ def onchain(dry_run: bool):
     async def _onchain():
         from onchain_tracker import OnChainTraderTracker
         
+        mode_info = f"Mode: [yellow]{'DRY RUN (Paper Trading)' if dry_run else 'LIVE'}[/yellow]"
+        if dry_run:
+            mode_info += f"\n  • Initial Balance: ${balance:.2f}"
+            mode_info += f"\n  • Copy Ratio: {copy_ratio:.0%}"
+        
         console.print(Panel(
             "[bold]On-Chain Copy Trading Mode[/bold]\n\n"
             "This mode works WITHOUT Polymarket API!\n"
             "Data sources:\n"
             "  • Polygon blockchain (direct RPC)\n"
             "  • The Graph subgraphs\n\n"
-            f"Mode: [yellow]{'DRY RUN' if dry_run else 'LIVE'}[/yellow]",
+            f"{mode_info}",
             title="On-Chain Mode"
         ))
         
-        tracker = OnChainTraderTracker()
+        tracker = OnChainTraderTracker(
+            dry_run=dry_run,
+            paper_balance=balance,
+            copy_ratio=copy_ratio
+        )
         
         try:
             await tracker.initialize()
             
             # Register signal handler
             async def on_signal(signal):
-                console.print(Panel(
-                    f"[bold]Trade Signal Detected[/bold]\n\n"
-                    f"Trader: {signal.trader_alias or signal.trader_address[:10]}...\n"
-                    f"Action: {signal.side}\n"
-                    f"Token: {signal.token_id[:10]}...\n"
-                    f"Amount: {signal.amount:.2f}\n"
-                    f"Confidence: {signal.confidence:.0%}\n"
-                    f"TX: {signal.tx_hash[:16]}...",
-                    title="Signal",
-                    border_style="green" if signal.side == "BUY" else "red"
-                ))
-                
-                if not dry_run:
-                    console.print("[yellow]Live execution not yet implemented[/yellow]")
+                pass  # Already logged in tracker
             
             tracker.register_signal_callback(on_signal)
             
             # Show status
             console.print(f"\n[blue]Tracking {len(tracker.tracked_traders)} traders[/blue]")
-            console.print(f"[blue]Starting block: {tracker.last_processed_block}[/blue]")
+            if dry_run and tracker.paper_wallet:
+                console.print(f"[blue]Paper Wallet Balance: ${tracker.paper_wallet.usdc_balance:.2f}[/blue]")
             console.print("[green]Press Ctrl+C to stop[/green]\n")
             
             await tracker.run()
@@ -502,6 +501,9 @@ def onchain(dry_run: bool):
         except Exception as e:
             console.print(f"[red]Error: {e}[/red]")
         finally:
+            # Show paper trading summary on exit
+            if dry_run and tracker.paper_wallet:
+                console.print(tracker.paper_wallet.get_summary())
             await tracker.stop()
     
     asyncio.run(_onchain())

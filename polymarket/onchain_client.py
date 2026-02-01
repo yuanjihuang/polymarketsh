@@ -482,17 +482,24 @@ class OnChainClient:
     
     async def get_market_by_token_id(self, token_id: str) -> Optional[Dict]:
         """
-        Get market information by token ID using Gamma API (Polymarket's public API)
+        Get market information by token ID
+        
+        Tries multiple sources:
+        1. Gamma API (most reliable for market info)
+        2. Heuristic fallback
         
         Returns market title, question, and outcome details
         """
+        # Ensure token_id is string
+        token_id = str(token_id)
+        
+        # Try Gamma API first (most reliable)
         await self._ensure_session()
         
         try:
-            # Gamma API - Polymarket's public market data API
             url = f"https://gamma-api.polymarket.com/markets?clob_token_ids={token_id}"
             
-            async with self.session.get(url, timeout=10) as response:
+            async with self.session.get(url, timeout=5) as response:
                 if response.status == 200:
                     data = await response.json()
                     if data and len(data) > 0:
@@ -508,15 +515,56 @@ class OnChainClient:
                             "end_date": market.get("end_date_iso", ""),
                             "active": market.get("active", False),
                         }
-            
-            # Fallback: Try fetching by condition_id pattern
-            # Token IDs on Polymarket are derived from condition_id + outcome_index
-            logger.debug(f"No market found for token_id {token_id}")
-            return None
-            
         except Exception as e:
-            logger.warning(f"Error fetching market for token {token_id}: {e}")
-            return None
+            logger.debug(f"Gamma API unavailable: {e}")
+        
+        # Fallback: Try The Graph (may not work for all markets)
+        result = await self._get_market_from_graph(token_id)
+        if result:
+            return result
+        
+        return None
+    
+    async def _get_market_from_graph(self, token_id: str) -> Optional[Dict]:
+        """
+        Get market and outcome info from The Graph
+        
+        Note: The Graph endpoint may not have all market data
+        """
+        # Ensure string type
+        token_id_str = str(token_id)
+        
+        # Try a simpler query that's more likely to work
+        query = """
+        query GetMarketInfo($tokenId: String!) {
+            fixedProductMarketMakers(
+                where: {id_contains: $tokenId}
+                first: 1
+            ) {
+                id
+                title
+                outcomes
+            }
+        }
+        """
+        
+        try:
+            data = await self.graph_query(query, {"tokenId": token_id_str})
+            
+            if data and "fixedProductMarketMakers" in data and data["fixedProductMarketMakers"]:
+                fpmm = data["fixedProductMarketMakers"][0]
+                outcomes = fpmm.get("outcomes", ["YES", "NO"])
+                
+                return {
+                    "condition_id": "",
+                    "question": fpmm.get("title", "Unknown Market"),
+                    "outcome": outcomes[0] if outcomes else "YES",
+                    "outcomes": outcomes,
+                }
+        except Exception as e:
+            logger.debug(f"Graph query failed: {e}")
+        
+        return None
     
     async def lookup_markets_batch(self, token_ids: List[str]) -> Dict[str, Dict]:
         """Batch lookup markets by token IDs"""

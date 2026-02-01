@@ -1,0 +1,230 @@
+/Users/yuanjihuang/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-02-02 03:12:11.925 | WARNING  | trade_executor:<module>:24 - py-clob-client not installed. Trading functionality will be limited.
+╭──────────────────────────────────────────────── On-Chain Mode ─────────────────────────────────────────────────╮
+│ On-Chain Copy Trading Mode                                                                                     │
+│                                                                                                                │
+│ This mode works WITHOUT Polymarket API!                                                                        │
+│ Data sources:                                                                                                  │
+│   • Polygon blockchain (direct RPC)                                                                            │
+│   • The Graph subgraphs                                                                                        │
+│                                                                                                                │
+│ Mode: DRY RUN (Paper Trading)                                                                                  │
+│   • Initial Balance: $3000000.00                                                                               │
+│   • Copy Ratio: 100%                                                                                           │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+03:12:11 | INFO     | onchain_tracker:initialize - Initializing On-Chain Trader Tracker...
+03:12:11 | INFO     | onchain_client:connect - Trying RPC: https://polygon-rpc.com
+03:12:15 | SUCCESS  | onchain_client:connect - Connected to Polygon RPC: https://polygon-rpc.com, block: 82426563
+03:12:15 | INFO     | onchain_tracker:_load_tracked_traders - Loaded 1 tracked traders
+03:12:16 | SUCCESS  | onchain_tracker:initialize - On-Chain Tracker initialized
+
+Tracking 1 traders
+Paper Wallet Balance: $3000000.00
+Press Ctrl+C to stop
+
+03:12:16 | INFO     | onchain_tracker:run - Starting On-Chain Tracker...
+03:13:06 | INFO     | onchain_tracker:_process_transfer_event - 
+03:13:06 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:13:06 | INFO     | onchain_tracker:_process_transfer_event - 🔔 [03:12:28] Trade Detected
+03:13:06 | INFO     | onchain_tracker:_process_transfer_event -    Trader: swisstony (0x204f72f35326db932158cba6adff0b9a1da95e14)
+03:13:06 | INFO     | onchain_tracker:_process_transfer_event -    Action: BUY | Amount: 1497.00 shares
+03:13:06 | INFO     | onchain_tracker:_process_transfer_event -    Token ID: 291340742360868898833041134130...
+03:13:06 | INFO     | onchain_tracker:_process_transfer_event -    ─────────────────────────────────────────────────────────
+03:13:06 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Verify TX: https://polygonscan.com/tx/0xc82b1b8ee522888da8b3398058df7c97781aaa3c0720451b533837f5dc0de418
+03:13:06 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Trader Profile: https://polymarket.com/profile/0x204f72f35326db932158cba6adff0b9a1da95e14
+03:13:06 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:13:06 | INFO     | onchain_tracker:_process_transfer_event -    💰 PAPER TRADE: BUY 1497.00 @ $0.5000
+03:13:06 | INFO     | onchain_tracker:_process_transfer_event -    💵 New Balance: $2999251.50 | Total P&L: $+0.00
+03:13:10 | INFO     | onchain_tracker:_process_transfer_event - 
+03:13:10 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:13:10 | INFO     | onchain_tracker:_process_transfer_event - 🔔 [03:12:28] Trade Detected
+03:13:10 | INFO     | onchain_tracker:_process_transfer_event -    Trader: swisstony (0x204f72f35326db932158cba6adff0b9a1da95e14)
+03:13:10 | INFO     | onchain_tracker:_process_transfer_event -    Action: BUY | Amount: 93.00 shares
+03:13:10 | INFO     | onchain_tracker:_process_transfer_event -    Token ID: 343672276434470002419589906719...
+03:13:10 | INFO     | onchain_tracker:_process_transfer_event -    ─────────────────────────────────────────────────────────
+03:13:10 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Verify TX: https://polygonscan.com/tx/0x454463058bee80f54b93514b09e411c43e7f372f4373412a10a3eae62eb603f7
+03:13:10 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Trader Profile: https://polymarket.com/profile/0x204f72f35326db932158cba6adff0b9a1da95e14
+03:13:10 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:13:10 | INFO     | onchain_tracker:_process_transfer_event -    💰 PAPER TRADE: BUY 93.00 @ $0.5000
+03:13:10 | INFO     | onchain_tracker:_process_transfer_event -    💵 New Balance: $2999205.00 | Total P&L: $+0.00
+03:13:11 | INFO     | onchain_tracker:_process_transfer_event - 
+03:13:11 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:13:11 | INFO     | onchain_tracker:_process_transfer_event - 🔔 [03:12:30] Trade Detected
+03:13:11 | INFO     | onchain_tracker:_process_transfer_event -    Trader: swisstony (0x204f72f35326db932158cba6adff0b9a1da95e14)
+03:13:11 | INFO     | onchain_tracker:_process_transfer_event -    Action: BUY | Amount: 85.00 shares
+03:13:11 | INFO     | onchain_tracker:_process_transfer_event -    Token ID: 110744145014411165891259928690...
+03:13:11 | INFO     | onchain_tracker:_process_transfer_event -    ─────────────────────────────────────────────────────────
+03:13:11 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Verify TX: https://polygonscan.com/tx/0x8123e8d38f17d1504c954013276123aae759be59813ae74ff4a6d3011bbb3d3f
+03:13:11 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Trader Profile: https://polymarket.com/profile/0x204f72f35326db932158cba6adff0b9a1da95e14
+03:13:11 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:13:11 | INFO     | onchain_tracker:_process_transfer_event -    💰 PAPER TRADE: BUY 85.00 @ $0.5000
+03:13:11 | INFO     | onchain_tracker:_process_transfer_event -    💵 New Balance: $2999162.50 | Total P&L: $+0.00
+03:13:19 | INFO     | onchain_tracker:_process_transfer_event - 
+03:13:19 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:13:19 | INFO     | onchain_tracker:_process_transfer_event - 🔔 [03:12:34] Trade Detected
+03:13:19 | INFO     | onchain_tracker:_process_transfer_event -    Trader: swisstony (0x204f72f35326db932158cba6adff0b9a1da95e14)
+03:13:19 | INFO     | onchain_tracker:_process_transfer_event -    Action: BUY | Amount: 57.00 shares
+03:13:19 | INFO     | onchain_tracker:_process_transfer_event -    Token ID: 753556152142034143959131460858...
+03:13:19 | INFO     | onchain_tracker:_process_transfer_event -    ─────────────────────────────────────────────────────────
+03:13:19 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Verify TX: https://polygonscan.com/tx/0x7e3c9ea19f59baf5ba742f0f41dd19efd7d3802e7fd23484445344fdcf36bf38
+03:13:19 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Trader Profile: https://polymarket.com/profile/0x204f72f35326db932158cba6adff0b9a1da95e14
+03:13:19 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:13:19 | INFO     | onchain_tracker:_process_transfer_event -    💰 PAPER TRADE: BUY 57.00 @ $0.5000
+03:13:19 | INFO     | onchain_tracker:_process_transfer_event -    💵 New Balance: $2999134.00 | Total P&L: $+0.00
+03:13:43 | INFO     | onchain_tracker:_process_transfer_event - 
+03:13:43 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:13:43 | INFO     | onchain_tracker:_process_transfer_event - 🔔 [03:12:38] Trade Detected
+03:13:43 | INFO     | onchain_tracker:_process_transfer_event -    Trader: swisstony (0x204f72f35326db932158cba6adff0b9a1da95e14)
+03:13:43 | INFO     | onchain_tracker:_process_transfer_event -    Action: BUY | Amount: 88.00 shares
+03:13:43 | INFO     | onchain_tracker:_process_transfer_event -    Token ID: 848805893464816981163226118353...
+03:13:43 | INFO     | onchain_tracker:_process_transfer_event -    ─────────────────────────────────────────────────────────
+03:13:43 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Verify TX: https://polygonscan.com/tx/0x0b950da38113172084f5535d954b78ff1f307ba1fc3b656dbc54895bdc9117aa
+03:13:43 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Trader Profile: https://polymarket.com/profile/0x204f72f35326db932158cba6adff0b9a1da95e14
+03:13:43 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:13:43 | INFO     | onchain_tracker:_process_transfer_event -    💰 PAPER TRADE: BUY 88.00 @ $0.5000
+03:13:43 | INFO     | onchain_tracker:_process_transfer_event -    💵 New Balance: $2999090.00 | Total P&L: $+0.00
+03:13:45 | INFO     | onchain_tracker:_process_transfer_event - 
+03:13:45 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:13:45 | INFO     | onchain_tracker:_process_transfer_event - 🔔 [03:12:38] Trade Detected
+03:13:45 | INFO     | onchain_tracker:_process_transfer_event -    Trader: swisstony (0x204f72f35326db932158cba6adff0b9a1da95e14)
+03:13:45 | INFO     | onchain_tracker:_process_transfer_event -    Action: BUY | Amount: 87.00 shares
+03:13:45 | INFO     | onchain_tracker:_process_transfer_event -    Token ID: 490603367484378801257228722895...
+03:13:45 | INFO     | onchain_tracker:_process_transfer_event -    ─────────────────────────────────────────────────────────
+03:13:45 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Verify TX: https://polygonscan.com/tx/0xe3ff6f77190ab09b83cdd4dbfa738a12da28d58918c9fdc2279bc2b48334e8de
+03:13:45 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Trader Profile: https://polymarket.com/profile/0x204f72f35326db932158cba6adff0b9a1da95e14
+03:13:45 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:13:45 | INFO     | onchain_tracker:_process_transfer_event -    💰 PAPER TRADE: BUY 87.00 @ $0.5000
+03:13:45 | INFO     | onchain_tracker:_process_transfer_event -    💵 New Balance: $2999046.50 | Total P&L: $+0.00
+03:13:46 | INFO     | onchain_tracker:_process_transfer_event - 
+03:13:46 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:13:46 | INFO     | onchain_tracker:_process_transfer_event - 🔔 [03:12:38] Trade Detected
+03:13:46 | INFO     | onchain_tracker:_process_transfer_event -    Trader: swisstony (0x204f72f35326db932158cba6adff0b9a1da95e14)
+03:13:46 | INFO     | onchain_tracker:_process_transfer_event -    Action: BUY | Amount: 62.50 shares
+03:13:46 | INFO     | onchain_tracker:_process_transfer_event -    Token ID: 549178092403636650781190260626...
+03:13:46 | INFO     | onchain_tracker:_process_transfer_event -    ─────────────────────────────────────────────────────────
+03:13:46 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Verify TX: https://polygonscan.com/tx/0x3b7086b1d8b3d54d6873bedead773def485f5abf340944798a698e48dc5938f4
+03:13:46 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Trader Profile: https://polymarket.com/profile/0x204f72f35326db932158cba6adff0b9a1da95e14
+03:13:46 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:13:46 | INFO     | onchain_tracker:_process_transfer_event -    💰 PAPER TRADE: BUY 62.50 @ $0.5000
+03:13:46 | INFO     | onchain_tracker:_process_transfer_event -    💵 New Balance: $2999015.25 | Total P&L: $+0.00
+03:14:09 | INFO     | onchain_tracker:_process_transfer_event - 
+03:14:09 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:14:09 | INFO     | onchain_tracker:_process_transfer_event - 🔔 [03:12:50] Trade Detected
+03:14:09 | INFO     | onchain_tracker:_process_transfer_event -    Trader: swisstony (0x204f72f35326db932158cba6adff0b9a1da95e14)
+03:14:09 | INFO     | onchain_tracker:_process_transfer_event -    Action: BUY | Amount: 4915.00 shares
+03:14:09 | INFO     | onchain_tracker:_process_transfer_event -    Token ID: 210739911612069597735054835772...
+03:14:09 | INFO     | onchain_tracker:_process_transfer_event -    ─────────────────────────────────────────────────────────
+03:14:09 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Verify TX: https://polygonscan.com/tx/0x2ed25a44790f831d897fd0db328528fc0597933c19c8fd58fa5959f65b78fbdb
+03:14:09 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Trader Profile: https://polymarket.com/profile/0x204f72f35326db932158cba6adff0b9a1da95e14
+03:14:09 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:14:09 | INFO     | onchain_tracker:_process_transfer_event -    💰 PAPER TRADE: BUY 4915.00 @ $0.5000
+03:14:09 | INFO     | onchain_tracker:_process_transfer_event -    💵 New Balance: $2996557.75 | Total P&L: $+0.00
+03:14:14 | INFO     | onchain_tracker:_process_transfer_event - 
+03:14:14 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:14:14 | INFO     | onchain_tracker:_process_transfer_event - 🔔 [03:12:56] Trade Detected
+03:14:14 | INFO     | onchain_tracker:_process_transfer_event -    Trader: swisstony (0x204f72f35326db932158cba6adff0b9a1da95e14)
+03:14:14 | INFO     | onchain_tracker:_process_transfer_event -    Action: BUY | Amount: 162.00 shares
+03:14:14 | INFO     | onchain_tracker:_process_transfer_event -    Token ID: 260621891238480074510107474165...
+03:14:14 | INFO     | onchain_tracker:_process_transfer_event -    ─────────────────────────────────────────────────────────
+03:14:14 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Verify TX: https://polygonscan.com/tx/0xcbc938b3247a5f72d21b452e41b0efb60f708ba16576eb19d9aacc90b11710b6
+03:14:14 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Trader Profile: https://polymarket.com/profile/0x204f72f35326db932158cba6adff0b9a1da95e14
+03:14:14 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:14:14 | INFO     | onchain_tracker:_process_transfer_event -    💰 PAPER TRADE: BUY 162.00 @ $0.5000
+03:14:14 | INFO     | onchain_tracker:_process_transfer_event -    💵 New Balance: $2996476.75 | Total P&L: $+0.00
+03:14:16 | INFO     | onchain_tracker:_process_transfer_event - 
+03:14:16 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:14:16 | INFO     | onchain_tracker:_process_transfer_event - 🔔 [03:12:56] Trade Detected
+03:14:16 | INFO     | onchain_tracker:_process_transfer_event -    Trader: swisstony (0x204f72f35326db932158cba6adff0b9a1da95e14)
+03:14:16 | INFO     | onchain_tracker:_process_transfer_event -    Action: BUY | Amount: 58.00 shares
+03:14:16 | INFO     | onchain_tracker:_process_transfer_event -    Token ID: 921748686151393043090876187078...
+03:14:16 | INFO     | onchain_tracker:_process_transfer_event -    ─────────────────────────────────────────────────────────
+03:14:16 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Verify TX: https://polygonscan.com/tx/0x0b8842edca875709ed1ce0a720b0f21abac0555ffb6972c7b6fdee0db8e5de4a
+03:14:16 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Trader Profile: https://polymarket.com/profile/0x204f72f35326db932158cba6adff0b9a1da95e14
+03:14:16 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:14:16 | INFO     | onchain_tracker:_process_transfer_event -    💰 PAPER TRADE: BUY 58.00 @ $0.5000
+03:14:16 | INFO     | onchain_tracker:_process_transfer_event -    💵 New Balance: $2996447.75 | Total P&L: $+0.00
+03:14:19 | INFO     | onchain_tracker:_process_transfer_event - 
+03:14:19 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:14:19 | INFO     | onchain_tracker:_process_transfer_event - 🔔 [03:12:56] Trade Detected
+03:14:19 | INFO     | onchain_tracker:_process_transfer_event -    Trader: swisstony (0x204f72f35326db932158cba6adff0b9a1da95e14)
+03:14:19 | INFO     | onchain_tracker:_process_transfer_event -    Action: BUY | Amount: 72.40 shares
+03:14:19 | INFO     | onchain_tracker:_process_transfer_event -    Token ID: 753556152142034143959131460858...
+03:14:19 | INFO     | onchain_tracker:_process_transfer_event -    ─────────────────────────────────────────────────────────
+03:14:19 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Verify TX: https://polygonscan.com/tx/0x40eb6193e4a4c57a42aad02e3638ed9861d89905d4e57bf16dfd45fc307710f0
+03:14:19 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Trader Profile: https://polymarket.com/profile/0x204f72f35326db932158cba6adff0b9a1da95e14
+03:14:19 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:14:19 | INFO     | onchain_tracker:_process_transfer_event -    💰 PAPER TRADE: BUY 72.40 @ $0.5000
+03:14:19 | INFO     | onchain_tracker:_process_transfer_event -    💵 New Balance: $2996411.55 | Total P&L: $+0.00
+03:15:03 | WARNING  | onchain_tracker:_process_new_blocks - Too far behind (58 blocks), skipping to recent
+03:15:29 | INFO     | onchain_tracker:_process_transfer_event - 
+03:15:29 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:15:29 | INFO     | onchain_tracker:_process_transfer_event - 🔔 [03:14:58] Trade Detected
+03:15:29 | INFO     | onchain_tracker:_process_transfer_event -    Trader: swisstony (0x204f72f35326db932158cba6adff0b9a1da95e14)
+03:15:29 | INFO     | onchain_tracker:_process_transfer_event -    Action: BUY | Amount: 894.00 shares
+03:15:29 | INFO     | onchain_tracker:_process_transfer_event -    Token ID: 490603367484378801257228722895...
+03:15:29 | INFO     | onchain_tracker:_process_transfer_event -    ─────────────────────────────────────────────────────────
+03:15:29 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Verify TX: https://polygonscan.com/tx/0xd47f27ab200b3463be905168712c4f6bd9d8255cba60ad96ba73f0bbe4a5f401
+03:15:29 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Trader Profile: https://polymarket.com/profile/0x204f72f35326db932158cba6adff0b9a1da95e14
+03:15:29 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:15:29 | INFO     | onchain_tracker:_process_transfer_event -    💰 PAPER TRADE: BUY 894.00 @ $0.5000
+03:15:29 | INFO     | onchain_tracker:_process_transfer_event -    💵 New Balance: $2995964.55 | Total P&L: $+0.00
+03:15:32 | INFO     | onchain_tracker:_process_transfer_event - 
+03:15:32 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:15:32 | INFO     | onchain_tracker:_process_transfer_event - 🔔 [03:14:58] Trade Detected
+03:15:32 | INFO     | onchain_tracker:_process_transfer_event -    Trader: swisstony (0x204f72f35326db932158cba6adff0b9a1da95e14)
+03:15:32 | INFO     | onchain_tracker:_process_transfer_event -    Action: BUY | Amount: 98.00 shares
+03:15:32 | INFO     | onchain_tracker:_process_transfer_event -    Token ID: 343672276434470002419589906719...
+03:15:32 | INFO     | onchain_tracker:_process_transfer_event -    ─────────────────────────────────────────────────────────
+03:15:32 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Verify TX: https://polygonscan.com/tx/0x3823fd3986bf6724f55629af1871f3e846e97669c8831cc06710354b6bffc4ca
+03:15:32 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Trader Profile: https://polymarket.com/profile/0x204f72f35326db932158cba6adff0b9a1da95e14
+03:15:32 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:15:32 | INFO     | onchain_tracker:_process_transfer_event -    💰 PAPER TRADE: BUY 98.00 @ $0.5000
+03:15:32 | INFO     | onchain_tracker:_process_transfer_event -    💵 New Balance: $2995915.55 | Total P&L: $+0.00
+03:15:34 | INFO     | onchain_tracker:_process_transfer_event - 
+03:15:34 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:15:34 | INFO     | onchain_tracker:_process_transfer_event - 🔔 [03:15:00] Trade Detected
+03:15:34 | INFO     | onchain_tracker:_process_transfer_event -    Trader: swisstony (0x204f72f35326db932158cba6adff0b9a1da95e14)
+03:15:34 | INFO     | onchain_tracker:_process_transfer_event -    Action: SELL | Amount: 133.96 shares
+03:15:34 | INFO     | onchain_tracker:_process_transfer_event -    Token ID: 529332170297477811414373289612...
+03:15:34 | INFO     | onchain_tracker:_process_transfer_event -    ─────────────────────────────────────────────────────────
+03:15:34 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Verify TX: https://polygonscan.com/tx/0x8844189b7e7a4cfe964202979e2588e3f6f3949278d0441a431ae8025e9e7430
+03:15:34 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Trader Profile: https://polymarket.com/profile/0x204f72f35326db932158cba6adff0b9a1da95e14
+03:15:34 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:15:34 | INFO     | onchain_tracker:_process_transfer_event -    ⚠️  PAPER TRADE SKIPPED: No position to sell
+03:15:57 | INFO     | onchain_tracker:_process_transfer_event - 
+03:15:57 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:15:57 | INFO     | onchain_tracker:_process_transfer_event - 🔔 [03:15:06] Trade Detected
+03:15:57 | INFO     | onchain_tracker:_process_transfer_event -    Trader: swisstony (0x204f72f35326db932158cba6adff0b9a1da95e14)
+03:15:57 | INFO     | onchain_tracker:_process_transfer_event -    Action: BUY | Amount: 402.36 shares
+03:15:57 | INFO     | onchain_tracker:_process_transfer_event -    Token ID: 104030507599815378424628253945...
+03:15:57 | INFO     | onchain_tracker:_process_transfer_event -    ─────────────────────────────────────────────────────────
+03:15:57 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Verify TX: https://polygonscan.com/tx/0x88564f81d374145b77fa53e5b1a7eb37b1e0e4890f429d2d54b9cc7566fe1b5b
+03:15:57 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Trader Profile: https://polymarket.com/profile/0x204f72f35326db932158cba6adff0b9a1da95e14
+03:15:57 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:15:57 | INFO     | onchain_tracker:_process_transfer_event -    💰 PAPER TRADE: BUY 402.36 @ $0.5000
+03:15:57 | INFO     | onchain_tracker:_process_transfer_event -    💵 New Balance: $2995714.37 | Total P&L: $+0.00
+03:15:58 | INFO     | onchain_tracker:_process_transfer_event - 
+03:15:58 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:15:58 | INFO     | onchain_tracker:_process_transfer_event - 🔔 [03:15:12] Trade Detected
+03:15:58 | INFO     | onchain_tracker:_process_transfer_event -    Trader: swisstony (0x204f72f35326db932158cba6adff0b9a1da95e14)
+03:15:58 | INFO     | onchain_tracker:_process_transfer_event -    Action: BUY | Amount: 498.30 shares
+03:15:58 | INFO     | onchain_tracker:_process_transfer_event -    Token ID: 586219304517490937359243266838...
+03:15:58 | INFO     | onchain_tracker:_process_transfer_event -    ─────────────────────────────────────────────────────────
+03:15:58 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Verify TX: https://polygonscan.com/tx/0x167e7d6590e74fa650a682649880efbe201117c7d22dbf7d64d7fd351d88c84d
+03:15:58 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Trader Profile: https://polymarket.com/profile/0x204f72f35326db932158cba6adff0b9a1da95e14
+03:15:58 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:15:58 | INFO     | onchain_tracker:_process_transfer_event -    💰 PAPER TRADE: BUY 498.30 @ $0.5000
+03:15:58 | INFO     | onchain_tracker:_process_transfer_event -    💵 New Balance: $2995465.22 | Total P&L: $+0.00
+03:16:24 | INFO     | onchain_tracker:_process_transfer_event - 
+03:16:24 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:16:24 | INFO     | onchain_tracker:_process_transfer_event - 🔔 [03:15:22] Trade Detected
+03:16:24 | INFO     | onchain_tracker:_process_transfer_event -    Trader: swisstony (0x204f72f35326db932158cba6adff0b9a1da95e14)
+03:16:24 | INFO     | onchain_tracker:_process_transfer_event -    Action: BUY | Amount: 199.00 shares
+03:16:24 | INFO     | onchain_tracker:_process_transfer_event -    Token ID: 848805893464816981163226118353...
+03:16:24 | INFO     | onchain_tracker:_process_transfer_event -    ─────────────────────────────────────────────────────────
+03:16:24 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Verify TX: https://polygonscan.com/tx/0x102048674bcbbaf4e4941e10bd9c9328e28613efd34d4bbde2c73808f27a32e9
+03:16:24 | INFO     | onchain_tracker:_process_transfer_event -    🔗 Trader Profile: https://polymarket.com/profile/0x204f72f35326db932158cba6adff0b9a1da95e14
+03:16:24 | INFO     | onchain_tracker:_process_transfer_event - ═══════════════════════════════════════════════════════════
+03:16:24 | INFO     | onchain_tracker:_process_transfer_event -    💰 PAPER TRADE: BUY 199.00 @ $0.5000
+03:16:24 | INFO     | onchain_tracker:_process_transfer_event -    💵 New Balance: $2995365.72 | Total P&L: $+0.00

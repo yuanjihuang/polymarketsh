@@ -41,6 +41,178 @@ class TradeSignal:
     market_question: Optional[str] = None
 
 
+@dataclass
+class SimulatedPosition:
+    """A simulated position in the paper trading wallet"""
+    token_id: str
+    side: str  # The outcome we hold
+    shares: float
+    avg_price: float
+    total_cost: float
+    current_value: float = 0.0
+    pnl: float = 0.0
+
+
+class PaperTradingWallet:
+    """
+    Simulated wallet for dry-run copy trading
+    
+    Tracks:
+    - Virtual USDC balance
+    - Simulated positions
+    - P&L calculation
+    - Trade history
+    """
+    
+    def __init__(self, initial_balance: float = 1000.0, copy_ratio: float = 0.1):
+        self.initial_balance = initial_balance
+        self.usdc_balance = initial_balance
+        self.copy_ratio = copy_ratio  # Copy 10% of detected trade size
+        self.positions: Dict[str, SimulatedPosition] = {}
+        self.trade_history: List[Dict] = []
+        self.total_trades = 0
+        self.winning_trades = 0
+        
+    def execute_copy_trade(self, signal: 'TradeSignal') -> Dict:
+        """
+        Execute a simulated copy trade based on a signal
+        
+        Returns trade result dict
+        """
+        # Calculate copy size (ratio of detected trade)
+        copy_amount = signal.amount * self.copy_ratio
+        
+        # Estimate price (use 0.5 if unknown, typical for binary markets)
+        price = signal.price if signal.price > 0 else 0.50
+        cost = copy_amount * price
+        
+        result = {
+            "success": False,
+            "signal": signal,
+            "copy_amount": copy_amount,
+            "price": price,
+            "cost": cost,
+            "reason": "",
+        }
+        
+        if signal.side == "BUY":
+            # Check if we have enough balance
+            if cost > self.usdc_balance:
+                # Reduce size to fit balance
+                copy_amount = (self.usdc_balance * 0.95) / price  # Use 95% max
+                cost = copy_amount * price
+                
+                if copy_amount < 1:
+                    result["reason"] = f"Insufficient balance (${self.usdc_balance:.2f})"
+                    return result
+            
+            # Execute buy
+            self.usdc_balance -= cost
+            
+            # Update or create position
+            if signal.token_id in self.positions:
+                pos = self.positions[signal.token_id]
+                new_shares = pos.shares + copy_amount
+                pos.total_cost += cost
+                pos.avg_price = pos.total_cost / new_shares
+                pos.shares = new_shares
+            else:
+                self.positions[signal.token_id] = SimulatedPosition(
+                    token_id=signal.token_id,
+                    side="YES",  # Simplified
+                    shares=copy_amount,
+                    avg_price=price,
+                    total_cost=cost,
+                )
+            
+            result["success"] = True
+            result["reason"] = "BUY executed"
+            
+        else:  # SELL
+            if signal.token_id not in self.positions:
+                result["reason"] = "No position to sell"
+                return result
+            
+            pos = self.positions[signal.token_id]
+            sell_shares = min(copy_amount, pos.shares)
+            revenue = sell_shares * price
+            
+            # Calculate P&L for this trade
+            cost_basis = sell_shares * pos.avg_price
+            pnl = revenue - cost_basis
+            
+            self.usdc_balance += revenue
+            pos.shares -= sell_shares
+            pos.total_cost -= cost_basis
+            
+            if pos.shares <= 0:
+                del self.positions[signal.token_id]
+            
+            result["success"] = True
+            result["pnl"] = pnl
+            result["reason"] = f"SELL executed, P&L: ${pnl:+.2f}"
+            
+            if pnl > 0:
+                self.winning_trades += 1
+        
+        # Record trade
+        self.total_trades += 1
+        self.trade_history.append({
+            "timestamp": signal.timestamp,
+            "trader": signal.trader_alias or signal.trader_address[:10],
+            "side": signal.side,
+            "amount": copy_amount,
+            "price": price,
+            "cost": cost,
+            "balance_after": self.usdc_balance,
+            "tx_hash": signal.tx_hash,
+        })
+        
+        return result
+    
+    def get_portfolio_value(self, default_price: float = 0.50) -> float:
+        """Calculate total portfolio value"""
+        positions_value = sum(
+            p.shares * default_price for p in self.positions.values()
+        )
+        return self.usdc_balance + positions_value
+    
+    def get_total_pnl(self) -> float:
+        """Calculate total P&L"""
+        return self.get_portfolio_value() - self.initial_balance
+    
+    def get_summary(self) -> str:
+        """Get portfolio summary string"""
+        portfolio_value = self.get_portfolio_value()
+        total_pnl = self.get_total_pnl()
+        pnl_pct = (total_pnl / self.initial_balance) * 100 if self.initial_balance > 0 else 0
+        win_rate = (self.winning_trades / self.total_trades * 100) if self.total_trades > 0 else 0
+        
+        lines = [
+            f"",
+            f"╔══════════════════════════════════════════════════════════╗",
+            f"║           📊 Paper Trading Portfolio Summary             ║",
+            f"╠══════════════════════════════════════════════════════════╣",
+            f"║  Initial Balance:    ${self.initial_balance:>10.2f}                  ║",
+            f"║  Current USDC:       ${self.usdc_balance:>10.2f}                  ║",
+            f"║  Positions Value:    ${portfolio_value - self.usdc_balance:>10.2f}                  ║",
+            f"║  ────────────────────────────────────────────────────── ║",
+            f"║  Portfolio Value:    ${portfolio_value:>10.2f}                  ║",
+            f"║  Total P&L:          ${total_pnl:>+10.2f} ({pnl_pct:+.1f}%)            ║",
+            f"║  ────────────────────────────────────────────────────── ║",
+            f"║  Total Trades:       {self.total_trades:>10}                    ║",
+            f"║  Win Rate:           {win_rate:>10.1f}%                   ║",
+            f"╚══════════════════════════════════════════════════════════╝",
+        ]
+        
+        if self.positions:
+            lines.append(f"\n📈 Open Positions ({len(self.positions)}):")
+            for token_id, pos in self.positions.items():
+                lines.append(f"   • {pos.shares:.2f} shares @ ${pos.avg_price:.4f} (cost: ${pos.total_cost:.2f})")
+        
+        return "\n".join(lines)
+
+
 class OnChainTraderTracker:
     """
     Tracks top traders using purely on-chain data
@@ -58,11 +230,23 @@ class OnChainTraderTracker:
         polygonscan_api_key: str = "",
         poll_interval: int = 15,
         min_trade_size: float = 50.0,
+        dry_run: bool = False,
+        paper_balance: float = 1000.0,
+        copy_ratio: float = 0.1,
     ):
         self.client = OnChainClient(rpc_url=rpc_url)
         self.polygonscan = PolygonscanClient(api_key=polygonscan_api_key)
         self.poll_interval = poll_interval
         self.min_trade_size = min_trade_size
+        
+        # Paper trading mode
+        self.dry_run = dry_run
+        self.paper_wallet: Optional[PaperTradingWallet] = None
+        if dry_run:
+            self.paper_wallet = PaperTradingWallet(
+                initial_balance=paper_balance,
+                copy_ratio=copy_ratio
+            )
         
         # Tracked traders
         self.tracked_traders: Dict[str, TraderStats] = {}
@@ -226,14 +410,26 @@ class OnChainTraderTracker:
         """Process new blocks for tracked trader activity"""
         current_block = await self.client.w3.eth.block_number
         
+        # On first run, start from current block (don't try to catch up)
+        if self.last_processed_block == 0:
+            self.last_processed_block = current_block - 2
+            logger.info(f"Starting from block {self.last_processed_block}")
+            return
+        
         if current_block <= self.last_processed_block:
             return
         
-        # Limit to 50 blocks max to avoid "Block range is too large" error
-        blocks_to_process = min(current_block - self.last_processed_block, 50)
-        start_block = current_block - blocks_to_process + 1
+        # If we're too far behind, skip to near current (avoid huge catch-up)
+        if current_block - self.last_processed_block > 50:
+            logger.warning(f"Too far behind ({current_block - self.last_processed_block} blocks), skipping to recent")
+            self.last_processed_block = current_block - 5
+            return
         
-        logger.debug(f"Processing blocks {start_block} to {current_block}")
+        # Process only 5 blocks at a time to avoid "Block range is too large" error
+        start_block = self.last_processed_block + 1
+        end_block = min(start_block + 4, current_block)  # Max 5 blocks
+        
+        logger.debug(f"Processing blocks {start_block} to {end_block}")
         
         # Query CTF TransferSingle events to find trader activity
         # This catches trades even when submitted by relayers
@@ -243,7 +439,7 @@ class OnChainTraderTracker:
             # Get TransferSingle events from CTF contract
             transfer_filter = {
                 "fromBlock": start_block,
-                "toBlock": current_block,
+                "toBlock": end_block,
                 "address": ctf_address,
                 "topics": [
                     "0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62"  # TransferSingle
@@ -251,6 +447,9 @@ class OnChainTraderTracker:
             }
             
             logs = await self.client.w3.eth.get_logs(transfer_filter)
+            
+            # Update processed block after successful query
+            self.last_processed_block = end_block
             
             for log in logs:
                 try:
@@ -303,8 +502,8 @@ class OnChainTraderTracker:
         
         except Exception as e:
             logger.warning(f"Error getting logs: {e}")
-        
-        self.last_processed_block = current_block
+            # Skip these blocks on error to avoid infinite retry loop
+            self.last_processed_block = end_block
     
     async def _process_transfer_event(
         self, tx_hash: str, log, block, trader_address: str,
@@ -316,28 +515,44 @@ class OnChainTraderTracker:
         if amount_decimal < self.min_trade_size:
             return
         
-        # Look up market information
         token_id_str = str(token_id)
-        market_info = await self.client.get_market_by_token_id(token_id_str)
         
-        market_question = "Unknown Market"
-        market_outcome = ""
-        market_slug = ""
+        # Ensure tx_hash has 0x prefix
+        if not tx_hash.startswith("0x"):
+            tx_hash = "0x" + tx_hash
         
-        if market_info:
-            market_question = market_info.get("question", "Unknown Market")
-            market_outcome = market_info.get("outcome", "")
-            market_slug = market_info.get("market_slug", "")
+        # Try to get market info and outcome
+        outcome = "YES/NO"
+        market_question = None
         
-        # Log with market details
+        try:
+            market_info = await self.client.get_market_by_token_id(token_id_str)
+            if market_info:
+                outcome = market_info.get("outcome", "YES/NO")
+                market_question = market_info.get("question")
+        except Exception as e:
+            logger.debug(f"Could not fetch market info: {e}")
+        
+        # Log with available details
         trader_alias = self.trader_aliases.get(trader_address, trader_address[:10] + "...")
+        time_str = datetime.fromtimestamp(block.timestamp).strftime("%H:%M:%S")
+        
+        # Format action with outcome
+        action_str = f"{side} {outcome}" if outcome and outcome != "YES/NO" else side
+        
+        logger.info(f"")
         logger.info(f"═══════════════════════════════════════════════════════════")
-        logger.info(f"🔔 Trade Detected for [{trader_alias}]")
-        logger.info(f"   Market: {market_question[:80]}{'...' if len(market_question) > 80 else ''}")
-        if market_outcome:
-            logger.info(f"   Outcome: {market_outcome}")
-        logger.info(f"   Action: {side} | Amount: {amount_decimal:.2f} shares")
-        logger.info(f"   TX: https://polygonscan.com/tx/{tx_hash}")
+        logger.info(f"🔔 [{time_str}] Trade Detected")
+        logger.info(f"   Trader: {trader_alias} ({trader_address})")
+        logger.info(f"   Action: {action_str} | Amount: {amount_decimal:.2f} shares")
+        if market_question:
+            # Truncate long questions
+            q = market_question[:60] + "..." if len(market_question) > 60 else market_question
+            logger.info(f"   Market: {q}")
+        logger.info(f"   Token ID: {token_id_str[:30]}...")
+        logger.info(f"   ─────────────────────────────────────────────────────────")
+        logger.info(f"   🔗 Verify TX: https://polygonscan.com/tx/{tx_hash}")
+        logger.info(f"   🔗 Trader Profile: https://polymarket.com/profile/{trader_address}")
         logger.info(f"═══════════════════════════════════════════════════════════")
         
         # Calculate confidence based on trader stats
@@ -350,7 +565,7 @@ class OnChainTraderTracker:
             trader_address=trader_address,
             trader_alias=self.trader_aliases.get(trader_address),
             token_id=token_id_str,
-            market_id=market_slug or token_id_str[:20],
+            market_id=token_id_str[:20],
             side=side,
             amount=amount_decimal,
             price=0,  # Price requires additional decoding from exchange events
@@ -359,6 +574,15 @@ class OnChainTraderTracker:
             timestamp=datetime.fromtimestamp(block.timestamp),
             confidence=confidence,
         )
+        
+        # Execute paper trade if in dry-run mode
+        if self.dry_run and self.paper_wallet:
+            result = self.paper_wallet.execute_copy_trade(signal)
+            if result["success"]:
+                logger.info(f"   💰 PAPER TRADE: {signal.side} {result['copy_amount']:.2f} @ ${result['price']:.4f}")
+                logger.info(f"   💵 New Balance: ${self.paper_wallet.usdc_balance:.2f} | Total P&L: ${self.paper_wallet.get_total_pnl():+.2f}")
+            else:
+                logger.info(f"   ⚠️  PAPER TRADE SKIPPED: {result['reason']}")
         
         # Save to database
         await self._save_trade(signal)
